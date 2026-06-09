@@ -2,6 +2,7 @@ from fastapi import HTTPException, status
 
 from repositories.users import UserRepository
 from schemas.auth import UserLoginRequestSchema, UserLoginTokenResponseSchema
+from schemas.users import UserProfileSchema
 from security.passwords import verify_password
 from security.token_manager import create_access_token
 
@@ -10,8 +11,7 @@ class UsersService:
 	def __init__(self, user_repo: UserRepository):
 		self.user_repo = user_repo
 
-
-	async def login_user(self, user_data: UserLoginRequestSchema):
+	async def login_user(self, user_data: UserLoginRequestSchema) -> UserLoginTokenResponseSchema:
 		"""
 		Authenticates the user using the provided email and password and generates
 		access and refresh tokens upon successful login. This method validates
@@ -41,6 +41,16 @@ class UsersService:
 				status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect email or password"
 			)
 		access_token = create_access_token(data={"sub": str(user.id)})
-		return {"access_token": access_token,
-		        "token_type": "bearer"
-		        }
+		response = {"access_token": access_token,
+		            "token_type": "bearer"}
+		return UserLoginTokenResponseSchema.model_validate(response)
+
+	async def get_user_info(self, user_id: int) -> UserProfileSchema:
+		user = await self.user_repo.get_by_id(user_id)
+		if not user:
+			raise HTTPException(
+				status_code=status.HTTP_404_NOT_FOUND,
+				detail="User not found"
+			)
+
+		return UserProfileSchema.model_validate(user)
