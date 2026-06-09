@@ -561,6 +561,7 @@ dependencies = [
     { name = "fastapi", extra = ["standard"] },
     { name = "psycopg2" },
     { name = "pydantic-settings" },
+    { name = "sqlalchemy" },
 ]
 
 [package.metadata]
@@ -570,6 +571,7 @@ requires-dist = [
     { name = "fastapi", extras = ["standard"], specifier = ">=0.136.3" },
     { name = "psycopg2", specifier = ">=2.9.12" },
     { name = "pydantic-settings", specifier = ">=2.14.1" },
+    { name = "sqlalchemy", specifier = ">=2.0.50" },
 ]
 
 [[package]]
