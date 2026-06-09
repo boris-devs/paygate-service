@@ -16,7 +16,7 @@ def get_user_service(user_repo: UserRepository = Depends(get_user_repository)) -
 	return UsersService(user_repo)
 
 
-@router.post("/login", response_model=UserLoginTokenResponseSchema)
+@router.post("/login/", response_model=UserLoginTokenResponseSchema)
 async def login(
 		payload: UserLoginRequestSchema,
 		user_service: UsersService = Depends(get_user_service)
