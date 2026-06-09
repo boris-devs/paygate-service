@@ -8,6 +8,9 @@ class Settings(BaseSettings):
 	POSTGRES_PASSWORD: str = "postgres"
 	POSTGRES_DB: str = "paygate_service"
 
+	ACCESS_SECRET_KEY: str = "access"
+	ALGORITHM: str = "HS256"
+	ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
 
 	model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
 
