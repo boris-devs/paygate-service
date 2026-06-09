@@ -3,6 +3,7 @@ from fastapi import status
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from repositories.users import UserRepository
 from src.security.token_manager import decode_access_token
 from src.db import get_db
 
@@ -32,7 +33,7 @@ async def get_current_user(
 		headers={"WWW-Authenticate": "Bearer"},
 	)
 
-	repository = UsersRepository(db)
+	repository = UserRepository(db)
 	try:
 		payload = decode_access_token(token)
 		sub = payload.get("sub")
@@ -43,7 +44,7 @@ async def get_current_user(
 	except (ValueError, AttributeError, Exception) as e:
 		raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=f"Could not validate credentials {e}")
 
-	user = await repository.get_user_by_id(user_id)
+	user = await repository.get_by_id(user_id)
 
 	if user is None:
 		raise credentials_exception
