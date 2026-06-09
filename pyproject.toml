@@ -12,5 +12,6 @@ dependencies = [
     "psycopg2>=2.9.12",
     "pydantic-settings>=2.14.1",
     "pyjwt>=2.13.0",
+    "ruff>=0.15.16",
     "sqlalchemy>=2.0.50",
 ]

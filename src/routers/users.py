@@ -17,31 +17,32 @@ router = APIRouter(prefix="/me")
 
 
 def get_user_service(db: AsyncSession = Depends(get_db)):
-	user_repo = UserRepository(db)
-	return UsersService(user_repo)
+    user_repo = UserRepository(db)
+    return UsersService(user_repo)
 
 
 def get_billing_service(db: AsyncSession = Depends(get_db)):
-	billing_repo = BillingRepository(db)
-	return BillingService(billing_repo)
+    billing_repo = BillingRepository(db)
+    user_repo = UserRepository(db)
+    return BillingService(billing_repo, user_repo)
 
 
 @router.get("/", response_model=UserProfileSchema)
 async def get_me(current_user: User = Depends(get_current_user)):
-	return current_user
+    return current_user
 
 
 @router.get("/accounts/", response_model=List[AccountsResponseSchema])
 async def get_my_accounts(
-		current_user: User = Depends(get_current_user),
-		billing_service: BillingService = Depends(get_billing_service)
+    current_user: User = Depends(get_current_user),
+    billing_service: BillingService = Depends(get_billing_service),
 ):
-	return await billing_service.get_user_accounts(user_id=current_user.id)
+    return await billing_service.get_user_accounts(user_id=current_user.id)
 
 
 @router.get("/payments/", response_model=List[PaymentsResponseSchema])
 async def get_my_payments(
-		current_user: User = Depends(get_current_user),
-		billing_service: BillingService = Depends(get_billing_service)
+    current_user: User = Depends(get_current_user),
+    billing_service: BillingService = Depends(get_billing_service),
 ):
-	return await billing_service.get_user_payments(user_id=current_user.id)
+    return await billing_service.get_user_payments(user_id=current_user.id)

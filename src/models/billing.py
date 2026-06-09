@@ -8,62 +8,55 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from models.base import Base
 
 if TYPE_CHECKING:
-	from src.models.users import User
+    from src.models.users import User
+
 
 class Account(Base):
-	__tablename__ = "accounts"
+    __tablename__ = "accounts"
 
-	id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-	user_id: Mapped[int] = mapped_column(
-		ForeignKey("users.id", ondelete="CASCADE"),
-		nullable=False,
-		index=True
-	)
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    user_id: Mapped[int] = mapped_column(
+        ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True
+    )
 
-	balance: Mapped[Decimal] = mapped_column(
-		Numeric(precision=12, scale=2),
-		default=Decimal("0.00"),
-		server_default=text("0.00"),
-		nullable=False
-	)
+    balance: Mapped[Decimal] = mapped_column(
+        Numeric(precision=12, scale=2),
+        default=Decimal("0.00"),
+        server_default=text("0.00"),
+        nullable=False,
+    )
 
-	user: Mapped["User"] = relationship(back_populates="accounts")
-	payments: Mapped[List["Payment"]] = relationship(back_populates="account")
+    user: Mapped["User"] = relationship(back_populates="accounts")
+    payments: Mapped[List["Payment"]] = relationship(back_populates="account")
 
-	def __repr__(self) -> str:
-		return f"<Account id={self.id} user_id={self.user_id} balance={self.balance}>"
+    def __repr__(self) -> str:
+        return f"<Account id={self.id} user_id={self.user_id} balance={self.balance}>"
 
 
 class Payment(Base):
-	__tablename__ = "payments"
+    __tablename__ = "payments"
 
-	id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
 
-	transaction_id: Mapped[str] = mapped_column(
-		String(255),
-		unique=True,
-		nullable=False,
-		index=True
-	)
+    transaction_id: Mapped[str] = mapped_column(
+        String(255), unique=True, nullable=False, index=True
+    )
 
-	account_id: Mapped[int] = mapped_column(
-		ForeignKey("accounts.id", ondelete="RESTRICT"),
-		nullable=False,
-		index=True
-	)
+    account_id: Mapped[int] = mapped_column(
+        ForeignKey("accounts.id", ondelete="RESTRICT"), nullable=False, index=True
+    )
 
-	amount: Mapped[Decimal] = mapped_column(
-		Numeric(precision=12, scale=2),
-		nullable=False
-	)
+    amount: Mapped[Decimal] = mapped_column(
+        Numeric(precision=12, scale=2), nullable=False
+    )
 
-	created_at: Mapped[datetime] = mapped_column(
-		default=datetime.now(),
-		server_default=text("TIMEZONE('utc', now())"),
-		nullable=False
-	)
+    created_at: Mapped[datetime] = mapped_column(
+        default=datetime.now(),
+        server_default=text("TIMEZONE('utc', now())"),
+        nullable=False,
+    )
 
-	account: Mapped["Account"] = relationship(back_populates="payments")
+    account: Mapped["Account"] = relationship(back_populates="payments")
 
-	def __repr__(self) -> str:
-		return f"<Payment id={self.id} transaction_id={self.transaction_id} amount={self.amount}>"
+    def __repr__(self) -> str:
+        return f"<Payment id={self.id} transaction_id={self.transaction_id} amount={self.amount}>"

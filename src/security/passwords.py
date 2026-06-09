@@ -38,5 +38,5 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
 
     except VerifyMismatchError:
         return False
-    except(VerificationError, InvalidHashError):
+    except (VerificationError, InvalidHashError):
         return False
