@@ -21,3 +21,7 @@ class WebhookPayloadSchema(BaseModel):
         amount_str = str(int(self.amount)) if self.amount % 1 == 0 else str(self.amount)
 
         return f"{self.account_id}{amount_str}{self.transaction_id}{self.user_id}{secret_key}"
+
+class WebhookResponseSchema(BaseModel):
+    status: str
+    detail: str
