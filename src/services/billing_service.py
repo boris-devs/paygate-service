@@ -5,7 +5,7 @@ from fastapi import status
 from src.core.settings import settings
 from src.models.billing import Payment, Account
 from src.repositories.users import UserRepository
-from src.schemas.webhooks import WebhookPayloadSchema
+from src.schemas.webhooks import WebhookPayloadSchema, WebhookResponseSchema
 from src.repositories.billing import BillingRepository
 from src.schemas.billings import AccountsResponseSchema, PaymentsResponseSchema
 
@@ -44,7 +44,7 @@ class BillingService:
         generated_hash = hashlib.sha256(sign_string.encode("utf-8")).hexdigest()
         return generated_hash == payload.signature
 
-    async def process_webhook(self, payload: WebhookPayloadSchema, user_repo: UserRepository) -> dict:
+    async def process_webhook(self, payload: WebhookPayloadSchema, user_repo: UserRepository) ->  WebhookResponseSchema:
         """
         Process an incoming payment webhook.
 
@@ -124,7 +124,8 @@ class BillingService:
 
         await self.billing_repo.session.commit()
 
-        return {
+        response = {
             "status": "success",
             "detail": f"Account {account.id} successfully credited",
         }
+        return WebhookResponseSchema.model_validate(response)
