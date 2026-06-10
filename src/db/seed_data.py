@@ -14,7 +14,7 @@ async def seed_data():
 
 	async with AsyncSessionLocal() as session:
 		async with session.begin():
-			result = await session.execute(select(User).filter_by(id=1))
+			result = await session.execute(select(User).where(User.email == "user@test.com"))
 			existing_user = result.scalar_one_or_none()
 
 			if existing_user:
@@ -44,7 +44,7 @@ async def seed_data():
 			)
 			session.add(test_account)
 
-		print("Test data successfully added!")
+			print("Test data successfully added!")
 
 
 if __name__ == "__main__":
