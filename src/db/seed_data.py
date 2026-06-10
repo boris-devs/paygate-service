@@ -1,7 +1,7 @@
 import asyncio
 from sqlalchemy import select
 
-from security.passwords import hash_password
+from src.security.passwords import hash_password
 from src.db.session_postgres import AsyncSessionLocal
 from src.models.users import User, UserRole
 from src.models.billing import Account

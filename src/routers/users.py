@@ -23,8 +23,7 @@ def get_user_service(db: AsyncSession = Depends(get_db)):
 
 def get_billing_service(db: AsyncSession = Depends(get_db)):
     billing_repo = BillingRepository(db)
-    user_repo = UserRepository(db)
-    return BillingService(billing_repo, user_repo)
+    return BillingService(billing_repo)
 
 
 @router.get("/", response_model=UserProfileSchema)
