@@ -22,7 +22,6 @@ async def seed_data():
 				return
 
 			test_user = User(
-				id=1,
 				email="user@test.com",
 				password_hash=dummy_hash,
 				full_name="Test User",
@@ -30,7 +29,6 @@ async def seed_data():
 			)
 
 			test_admin = User(
-				id=2,
 				email="admin@test.com",
 				password_hash=dummy_hash,
 				full_name="Test Admin",
@@ -41,7 +39,6 @@ async def seed_data():
 			await session.flush()
 
 			test_account = Account(
-				id=1,
 				user_id=test_user.id,
 				balance=0.00
 			)
