@@ -1,5 +1,7 @@
 from typing import List
 from fastapi import HTTPException, status
+from sqlalchemy.orm import selectinload
+
 from src.repositories.users import UserRepository
 from src.security.passwords import hash_password
 from src.models.users import User
@@ -44,7 +46,16 @@ class AdminService:
         await self.user_repo.session.commit()
 
         await self.user_repo.session.refresh(new_user)
-        return AdminUserResponseSchema.model_validate(new_user)
+
+        user_data = {
+            "id": new_user.id,
+            "email": new_user.email,
+            "full_name": new_user.full_name,
+            "role": new_user.role,
+            "accounts": []
+        }
+
+        return AdminUserResponseSchema.model_validate(user_data)
 
     async def update_user(
         self, user_id: int, payload: UserUpdateSchema
