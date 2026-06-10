@@ -4,8 +4,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.db import get_db
 
-from repositories.users import UserRepository
-from services.billing_service import BillingService
+from src.repositories.users import UserRepository
+from src.services.billing_service import BillingService
 from src.models.users import User
 from src.schemas.users import UserProfileSchema
 from src.schemas.billings import PaymentsResponseSchema, AccountsResponseSchema

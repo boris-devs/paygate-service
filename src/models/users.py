@@ -3,7 +3,7 @@ from typing import List, TYPE_CHECKING
 from sqlalchemy import String, Enum
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from models.base import Base
+from src.models.base import Base
 
 if TYPE_CHECKING:
     from src.models.billing import Account

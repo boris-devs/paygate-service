@@ -2,10 +2,10 @@ import hashlib
 
 from fastapi import HTTPException
 from fastapi import status
-from core.settings import settings
-from models.billing import Payment, Account
-from repositories.users import UserRepository
-from schemas.webhooks import WebhookPayloadSchema
+from src.core.settings import settings
+from src.models.billing import Payment, Account
+from src.repositories.users import UserRepository
+from src.schemas.webhooks import WebhookPayloadSchema
 from src.repositories.billing import BillingRepository
 from src.schemas.billings import AccountsResponseSchema, PaymentsResponseSchema
 

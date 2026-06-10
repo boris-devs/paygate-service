@@ -1,10 +1,10 @@
 from fastapi import HTTPException, status
 
-from repositories.users import UserRepository
-from schemas.auth import UserLoginRequestSchema, UserLoginTokenResponseSchema
-from schemas.users import UserProfileSchema
-from security.passwords import verify_password
-from security.token_manager import create_access_token
+from src.repositories.users import UserRepository
+from src.schemas.auth import UserLoginRequestSchema, UserLoginTokenResponseSchema
+from src.schemas.users import UserProfileSchema
+from src.security.passwords import verify_password
+from src.security.token_manager import create_access_token
 
 
 class UsersService:
